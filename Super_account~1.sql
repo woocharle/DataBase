@@ -1,0 +1,1 @@
+ALTER USER c##jwc default tablespace USERS QUOTA unlimited on users;

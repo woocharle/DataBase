@@ -1,0 +1,82 @@
+
+oracle XE(Express Edition)로 설치
+
+Enterprise Standard는 돈주고 사는 것이다.
+
+메뉴 -> downloads(오른쪽 하단)
+
+Developer Tools: SQL Developer 
+
+Windows 32-bit/64-bit
+
+
+오라클 설치 후 연습용 hr계정 환경설정
+
+- 오라클 설치 폴더는 일반적인 설치 폴더를 사용 (한글이름이 있는 폴더가 실행 불가)
+
+- 오라클 설치 중간에 비번 입력 : 슈퍼관리자 비번을 물어본다. oracle
+
+- 오라클 포트 번호: 8080 (tomcat과 충돌이 일어남.)
+- 오라클 리스너 포트번호: 1521
+
+- 슈퍼관리자의 아이디: system
+- 비번은 설치할 때 입력한 비밀번호: oracle
+
+- DB관리자 외에 다른 IT 종사자들은 제약조건만 알아도 된다.
+
+- 온라인 교육: w3schools.com
+
+
+오라클 설치 완료 후 
+
+1) cmd창:
+   SQL*Plus: Release 18.0.0.0.0 - Production on 월 6월 1 11:46:49 2020
+   Version 18.4.0.0.0
+
+   Copyright (c) 1982, 2018, Oracle.  All rights reserved.
+
+   사용자명 입력: system
+   비밀번호 입력:
+
+   다음에 접속됨:
+   Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+   Version 18.4.0.0.0
+
+   SQL> exit
+   Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+   Version 18.4.0.0.0에서 분리되었습니다.
+
+   C:\Users\ict02-30>
+
+2) SQL Developer이용
+
+ - java JDK 위치 설정: C:\Program Files\Java\jdk1.8.0_251
+
+ - 오라클 DB에 접속해야 된다.
+   
+   -> Oracle 접속 마우스 오른쪽 클릭 후 새 접속 클릭
+
+   * 비밀번호 저장하면 안 됨.
+
+   -> 테스트 후 성공이 나오면 접속.
+
+   -> 인코딩은 변경시키지 않는다.
+
+ - 코드 편집기로 글꼴 변경가능.
+
+
+Maria DB
+
+- 10.5는 아직 release가 안 되서 10.4
+
+- .zip이 아닌 .msi로 받을 것.
+
+
+eXERD
+
+
+
+
+
+
+
