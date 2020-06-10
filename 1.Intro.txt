@@ -338,7 +338,10 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
  	WHERE EXIST(SELECT *
 		    FROM table2 별칭2
 	            WHERE 별칭1.컬럼이름 = 별칭2.컬럼이름);
-	
+
+
+===========================================================================================================	
+
 
 3. PL / SQL
  (1) Intro
@@ -371,13 +374,14 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
 	
 
         익명프로시져를 활용한 제어문 연습
-	자바	                       익명 프로시저
+	자바	                        익명 프로시저
         
         자료형 변수 = 값;          =>   변수 자료형 := 값;   ex) i int := 0;
 	System.out.println(내용)   =>   dbms_output.put_line();
 
  	dbms_output.put_line()을 사용하기 위해서는 set serveroutput on; 
-	set serveroutput on은 한 번 실행만 하면 되기 때문에 주석처리를 한다.	
+	set serveroutput on은 한 번 실행만 하면 되기 때문에 주석처리를 한다.
+	지우개로 지울 경우	
 
 	3-2) 조건문 
 	    if 조건식 then 명령문1(sql문);
@@ -430,6 +434,177 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
 		end loop;
 	
 	
+     4) 배열
+        4-1) 형식: TPYE 배열이름 IS VARRAY(배열크기) OF 배열 타입;
+	           ex) TYPE name_arr IS VARRAY(5) OF VARCHAR2(50);
+
+	4-2) 배열을 저장할 변수, 자료형을 배열로 지정
+ 	    
+	4-3) 사례
+	     
+
+
+
+     5) 프로시저
+	* 문법이 틀려도 컴파일이 된다. 수정을 할 경우 프로시저 폴더로 가서 프로시저를 수정하면 된다.
+
+	5-1) 프로시저 저장 
+	     형식 CREATE [or REPLACE] PROCEDURE 프로시져이름 
+	     (변수 [IN or OUT] [data_type or table_name.column_name%TYPE]) as | is
+	     변수 선언 1;     => 변수 OUT [data_type or table_name.column_name%TYPE]과 달리 DECLARE를 
+				 할 필요 없다. 
+	     변수 선언 2;
+	     ....
+	     BEGIN 명령문 (update, insert, delete는 sql과 같지만, selct문은 아니다.)
+	     END;
+
+	5-2) 프로시저 실행 (IN 사용)
+	     변수를 입력할 경우 EXEC 해당 프로시저이름.
+		
+	     프로시저 실행 (OUT 사용)
+	     변수를 입력할 경우 EXEC 해당 프로시저이름.
+
+	5-3) 프로시저 삭제
+	     DROP 해당 프로시저이름.
+	
+	5-3) 사례_1 
+	     CREATE PROCEDURE c_name AS
+	     BEGIN
+    		UPDATE members SET m_name = '마이콜' WHERE idx = 2; 
+	     END;
+
+	     EXEC c_name;
+	     
+	     사례_2
+	     CREATE PROCEDURE c_name2 (v_idx IN NUMBER, v_name IN VARCHAR2) AS
+	     BEGIN 
+    		UPDATE members 
+    		SET m_name = v_name
+    		WHERE idx = v_idx; 
+	     END;
+
+
+	* 프로시저를 선언하고 나서 프로시저를 수정하려면 프로시저 -> 해당 프로지저로 들어가서 
+          수정할 수 있다.	
+
+	5-4) begin ~ end 안에서 사용되는 select문
+	     CREATE PROCEDURE procedure_name (변수....) AS
+	     저장 변수 data_type;
+	     BEGIN
+             	SELECT 저장변수를 넣을 column	    
+	     	INTO 저장변수 (결과값 저장, 하나만 받을 수 있다.)
+	     	FROM table_name
+	     	WHERE 조건식;
+	     END;
+	     ** 특징: WHERE 조건식을 사용해서 결과가 하나만 나오게 하자.
+		      나온 결과는 INTO 다음에 있는 저장변수에 저장.
+
+
+	5-5) 프로시저 안에 프로시저를 만들고 선언 할 수 있다. 
+	     CREATE PROCEDURE b_test(v_id book.bookid%TYPE) AS
+    		v_name book.bookname%TYPE;
+    		v_price book.price%TYPE;
+    		PROCEDURE book_test3(v_id book.bookid%TYPE) AS
+    	     BEGIN
+        	SELECT bookname, price
+        	INTO v_name, v_price
+        	FROM book
+        	WHERE bookid = v_id;
+    	     END;
+	     BEGIN
+    		book_test3(v_id, v_name, v_price);
+    		dbms_output.put_line('책 이름 ' || v_name);
+    		dbms_output.put_line('책 가격 ' || v_price);
+	     END;
+
+ (3) function
+     1) 정의
+        반드시 return 예약어 사용, 보통은 SQL문에서 호출해서 사용, 컬럼을 가공해서 반환
+
+     2) 형식
+        CREATE FUNCTION 이름()		CREATE PROCEDURE 이름() AS
+	RETURN data_type;		BEGIN
+	AS				    실행문
+	BEGIN				END;
+	    실행문(SQL문)
+	END;
+
+     * 실행: SQL문에서 호출.            * EXEC 프로시저 이름으로 호출.	
+
+     3) 함수를 이용하려면 테이블의 약어를 써야한다.
+	abbreviation: 약자
+
+	SELECT (abbr). * , funtion_name(abbr.column_name) AS (new column_name) FROM table_name (abbr);
+
+ (4) 커서(cursor) : 실행결과 테이블을 한 번에 한 행씩 처리하기 위해서 테이블의 행을 순서대로 
+                    가리키는데 사용
+
+     1) 커서와 관련된 키워드 
+	- 형식
+        cursor 커서_name is 커서_정의  => 커서 생성
+	open 커서_name                 => 커서의 사용을 시작
+	fetch 커서_이름 into 변수      => 행 데이터를 가져옴.
+	close 커서_name                => 커서의 사용을 끝냄
+ 
+	- rowcount: 행의 수
+        - isopen: 암시적일 대 항상 false, 명시적일 때 열림과 닫힘을 알아보는 명령어
+        - found: 결과가 1개 이상인 경우 true;
+	- not found: 결과가 하나도 없는 경우 true;
+
+     2) 암시적 커서: 자동으로 열림과 닫힘, 그리고 데이터 처리가 된다.
+
+     3) 명시적 커서: 수동으로 개발자에 의해서 열림, 닫힘 그리고 데이터 처리가 명시됨.
+	- 사례
+	CREATE PROCEDURE cursor_test_2 AS
+    		CURSOR cur IS SELECT bookname FROM book;
+    		b_name book.bookname%TYPE;
+	BEGIN
+    		OPEN cur;
+    		loop 
+        		FETCH cur
+        		INTO b_name;
+        		dbms_output.put_line(b_name);
+        		exit when cur%notfound;
+        
+   	 	end loop;
+    		CLOSE cur;
+
+	END;
+        
+ (5) 트리거(trigger)
+	
+     1) 정의: 자동 실행 기능, 특정 이벤트를 수행할 때 
+
+     2) 특징
+        - 호출해서 사용하지 않음.
+	- 특정이벤트가 발생하면 자동으로 실행됨.
+	- 특정이벤트: insert, update, delete
+	- 실행방법: before, after 중 하나
+
+     3) 형식
+	CREATE TRIGGER trigger_name BEFORE | AFTER
+		트리거 이벤트 on 타겟테이블 이름
+		[for each row]	
+		[when 조건절]
+		
+		* for each row: 영향을 받는 각 행에 대해 트리거를 실행 시킬 때 
+	BEGIN
+		내용
+	END;
+
+     4) 주의사항: 
+	- insert 경우 입력된 데이터가 :new에 저장된다.
+	- delete 경우 삭제된 데이터가 :old에 저장된다.
+	- update 경우 변경전: old, 변경후 : new에 저장된다.
+	- begin ~ end를 벗어나면 old, new로 사용된다.
+
+     5) 트리거 삭제   : DROP TRIGGER trigger_name;
+
+     6) 트리거 활성   : ALTER TRIGGER trigger_name ENABLE;
+
+     7) 트리거 비활성 : ALTER TRIGGER trigger_name DISABLE;	
+   
+	
 
 
 
@@ -439,6 +614,19 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+		
 
 
 

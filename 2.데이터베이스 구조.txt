@@ -214,6 +214,53 @@ BEGIN
 END ;
 
 
+================================================<프로시저>=================================================
+
+
+CREATE PROCEDURE insertbook 
+(i_bookid book.bookid%TYPE, i_bookname book.bookname%TYPE, 
+i_publisher book.publisher%TYPE, i_price book.price%TYPE) AS
+BEGIN
+    INSERT INTO book
+    VALUES(i_bookid, i_bookname, i_publisher, i_price);
+
+END;
+
+
+
+EXEC insertbook(13, '스포츠 과학', '마당과학서적', 25000);
+
+--begin ~ end 안에서 사용되는 select문
+
+CREATE PROCEDURE check_book
+(i_bookid book.bookid%TYPE, i_bookname book.bookname%TYPE, 
+i_publisher book.publisher%TYPE, i_price book.price%TYPE) AS
+cnt NUMBER;
+BEGIN
+    SELECT count(*)
+    INTO cnt 
+    FROM book
+    WHERE bookname = i_bookname and publisher = i.publisher;
+    if(cnt = 0) then
+        INSERT INTO book VALUES(i_bookid, i_bookname, i_publisher, i_price);
+        dbms_output.put_line('데이터 삽입 성공');
+    else
+        UPDATE book SET price = i_price WHERE bookname = i_bookname AND publisher = i_publisher;
+        dbms_output.put_line('데이터 수정 성공');
+        
+    end if;
+
+END;
+
+EXEC check_book(11, '축구의 역사', '굿스포츠', 8000);
+EXEC check_book(11, '골프의 역사', '굿스포츠', 10000);
+
+
+SELECT * FROM book;
+COMMIT;
+
+
+
 
 
 

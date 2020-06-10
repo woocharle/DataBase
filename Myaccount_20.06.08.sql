@@ -1,187 +1,94 @@
-set serveroutput on;
+
+set serveroutput on; 
+
+
+CREATE PROCEDURE avg_price (avg_val OUT NUMBER) AS
+BEGIN
+    SELECT AVG(price)  
+    INTO avg_val 
+    FROM book
+    WHERE price IS NOT NULL;
+END;
 
 DECLARE
-    i int := 9;
-    grade varchar2(50) := 'A';
-    
+avg_val NUMBER;
 BEGIN
-    if i = 10 then 
-        dbms_output.put_line('i는 ' || i || ' 입니다.');
-        dbms_output.put_line('성적은 ' || grade || ' 입니다.');
-        
-    end if;
-    
-    if mod(i, 2) = 0  then 
-        dbms_output.put_line(i || '는 짝수 입니다.');
+    avg_price(avg_val);
+    dbms_output.put_line('책의 평균: ' || trunc(avg_val));
+END;
 
-    else
-        dbms_output.put_line(i || '는 홀수 입니다.');
-    end if;
-    
-END ;
+SELECT * FROM book;
 
+--book id를 입력 받아서 책이름, 가격을 출력하는 프로시저를 만들어라.
+
+CREATE PROCEDURE bookout
+(i_bookid IN NUMBER, i_bookname OUT VARCHAR2, i_price OUT NUMBER) AS
+BEGIN
+    SELECT bookname
+    INTO i_bookname
+    FROM book
+    WHERE bookid = i_bookid;
+    
+    SELECT price
+    INTO i_price
+    FROM book
+    WHERE bookid = i_bookid;
+    
+END;
 
 DECLARE
-    i int := 9;
-    res VARCHAR2(50) := ' ';
-    
+i_bookname VARCHAR2(50); 
+i_price NUMBER;
 BEGIN
-    if mod(i, 2) = 0  then 
-        res := '짝수';
+    bookout(2, i_bookname, i_price);
+    dbms_output.put_line('책의 이름: ' || i_bookname || ', 책의 가격: ' || i_price);
+END;
 
-    else
-        res := '홀수';
-    end if;
-    
-    dbms_output.put_line(i || '는 '|| res || '입니다.');
-    
-END ;
-
-DECLARE
-    i int := 100;
-    res VARCHAR2(50) := '';
-    
+CREATE PROCEDURE book_test(v_id in book.bookid%TYPE) AS
+v_name book.bookname%TYPE;
+v_price book.price%TYPE;
 BEGIN
-    if i >= 90  then 
-        res := 'A';
-    elsif i >= 80 then
-        res := 'B';
-    elsif i >= 70 then
-        res := 'C';
-    else
-        res := 'F';
-    end if;
-    
-    dbms_output.put_line('성적은 '|| res || '입니다.');
-    
-END ;
+    SELECT bookname, price 
+    INTO v_name, v_price
+    FROM book
+    WHERE bookid = v_id;
+END;
+
+EXEC book_test(1);
 
 
-DECLARE
-    cnt int;
+CREATE PROCEDURE book_test2
+(i_bookid IN NUMBER, i_bookname OUT VARCHAR2, i_price OUT NUMBER) AS
 BEGIN
-    for cnt in 1..10 loop
-        dbms_output.put_line('cnt = ' || cnt);
-    end loop;
-    
-END ;
-
--- 짝수 출력
-DECLARE
-    cnt int;
+    SELECT bookname, price 
+    INTO i_bookname, i_price
+    FROM book
+    WHERE bookid = v_id;
+END;
 BEGIN
-    for cnt in 1..10 loop
-        if mod(cnt, 2) = 0 then
-            dbms_output.put_line('cnt = ' || cnt);
-        end if;
-    end loop;
-    
-END ;
+    book_test2(i_bookid);
+    dbms_output.put_line('책 이름: ' || i_bookname);
+    dbms_output.put_line('책 가격: ' || i_price);
+END;
 
--- 짝수의 합 출력
-DECLARE
-    tot int := 0;
-    cnt int;
+
+CREATE PROCEDURE b_test(v_id book.bookid%TYPE) AS
+    v_name book.bookname%TYPE;
+    v_price book.price%TYPE;
+    PROCEDURE book_test3(v_id book.bookid%TYPE) AS
+    BEGIN
+        SELECT bookname, price
+        INTO v_name, v_price
+        FROM book
+        WHERE bookid = v_id;
+    END;
 BEGIN
-    for cnt in 1..10 loop
-        if mod(cnt, 2) = 0 then
-            tot := tot + cnt;    
-        end if;
-    end loop;
-    dbms_output.put_line('1부터 10까지 짝수의 총 합계는 ' || tot);
-    
-END ;
+    book_test3(v_id, v_name, v_price);
+    dbms_output.put_line('책 이름 ' || v_name);
+    dbms_output.put_line('책 가격 ' || v_price);
+END;
 
--- 1 ~ 10까지 출력
-DECLARE
-    tot int := 0;
-    cnt int := 0;
-BEGIN
-    while cnt < 10 loop
-        cnt := cnt + 1;
-        dbms_output.put_line(cnt);
-        
-    end loop;
-END ;
-
-
-DECLARE
-    tot int := 0;
-    cnt int := 0;
-BEGIN
-    while cnt < 10 loop
-        cnt := cnt + 1;
-        if mod(cnt, 2) = 0 then
-            dbms_output.put_line(cnt);
-        end if;
-    end loop;
-END ;
-
-DECLARE
-    tot int := 0;
-    cnt int := 0;
-BEGIN
-    while cnt < 10 loop
-        cnt := cnt + 1;
-        if mod(cnt, 2) = 0 then
-            tot := tot + cnt;
-        end if;
-    end loop;
-    dbms_output.put_line(tot);
-    
-END ;
-
-
-
-DECLARE
-    tot int := 0;
-    cnt int := 0;
-BEGIN
-    loop
-        cnt := cnt + 1;
-        dbms_output.put_line(cnt);
-        exit when cnt = 10;
-    end loop;
-END ;
-
-
-DECLARE
-    tot int := 0;
-    cnt int := 0;
-BEGIN
-    loop
-        cnt := cnt + 1;
-        if mod(cnt, 2) = 0 then
-            dbms_output.put_line(cnt);
-        end if;
-        
-        exit when cnt = 10;
-    end loop;
-END ;
-
-DECLARE
-    tot int := 0;
-    cnt int := 0;
-BEGIN
-    loop
-        cnt := cnt + 1;
-        if mod(cnt, 2) = 0 then
-            tot := tot + cnt;
-        end if;
-        
-        exit when cnt = 10;
-    end loop;
-    dbms_output.put_line(tot);
-    
-END ;
-
-
-
-
-
-
-
-
+EXEC b_test(2);
 
 
 
