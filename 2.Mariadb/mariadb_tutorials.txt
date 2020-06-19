@@ -1,0 +1,106 @@
+0. Intro
+
+https://mariadb.com/kb/en/beginner-mariadb-articles/
+https://www.tutorialspoint.com/mariadb/mariadb_installation.htm
+
+자바연동
+https://juyoung-1008.tistory.com/29
+
+마리아 DB는 MySQL에서 나옴. 포트번호: 3306
+ID: root
+비밀번호: mariadb
+
+Enable access from remote machines for 'roots' user는 체크하면 공유 동의, 안 하면 공유 안 함.
+
+HeidiSQL: oracle의 SQLdeveloper와 같은 것.
+명령어를 수행하면 그 것을 지워야 된다.
+
+
+오라클과 달리 데이터베이스를 먼저 만든다.
+
+
+==================================================================================================
+
+1. cmd창 (제목MySQL Client...)
+  1.1 root계정
+	
+   => [none]
+   (1) 데이터베이스 보기: show databases;
+   (2) 해당 데이터베이스로 이동: use 데이터베이스이름;
+   (3) 해당 데이터베이스에 테이블 보기: show tables;
+   (4) 해당 테이블 구조 보기: desc 테이블이름;
+   (5) 데이터베이스 생성: create database 이름;
+
+2. 명령어(Super) 
+  (1) 계정 생성 
+       create user '계정이름'@'%' identified by '비밀번호';    
+  (2) 권한 부여 
+      grant all privileges on 해당 데이터 베이스.* to '계정이름'@'%';
+
+3. 자료형
+   3.1 숫자
+	데이터 타입	의미		크기
+	tinyint		매우작은정수	1byte
+	smallint	작은 정수	2byte
+	meduimint	중간크기정수	3byte
+	int		정수		4byte
+	bigint		큰정수		8byte
+	float		단정도 부동소수	4byte
+	double		배정도 부동소수	8byte
+	decimal(m,n)	고정소수	
+	bit(n)		비트
+	*n은 자릿수
+
+   3.2 날짜형
+	date 		YYYY-MM-DD
+	datetime	YYYY-MM-DD hh:mm:ss
+	timestamp	YYYY-MM-DD hh:mm:ss
+	time		hh:mm:ss
+	year		YYYY 또는 YY
+	** timestamp 자동으로 현재시간이 들어감.	
+
+   3.3 문자형
+	char		고정길이
+	varchar		가변길이
+	binary		고정길이 (binary, 이진 문자열)
+	varbinary	가변길이 (binary, 이진 문자열)
+	blob		작은 blob	크기: 64kB
+	mediumblob	중간 blob	크기: 16MB
+	longblob	큰   blob	크기:  4GB
+
+
+4. 명령어
+  4.1 기본
+      (1) 테이블 생성
+	create table member01(
+	    idx int not null primary key,
+	    id varchar(50),
+	    pw varchar(50),
+	    name varchar(50),
+	    age int,
+	    reg timestamp
+	);     
+
+      (2) 삽입
+	insert into 테이블 이름
+	values(값, 값, 값, 값,);
+	* 자료형을 테이블에 맞춰야한다.	
+
+	insert into member01 
+	values(1, 'aaaa', '1111', 'hong', 24, null);
+	insert into member01 
+	VALUES(2, 'bbbb', '111mysqlmember01mydb1', 'Wang', 24, null);
+
+	* 만약에 한글처리가 안 되면 
+	  alter table 테이블이름 convert to charset utf8;
+	* utf8도 안 될 경우
+
+      (3) 오라클과 비교
+        1) 쿼리문은 같다.
+        2) oracle 함수는 쓸 수 없다.
+
+
+
+
+
+

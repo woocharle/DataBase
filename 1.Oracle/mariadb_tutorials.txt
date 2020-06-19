@@ -1,0 +1,5 @@
+https://mariadb.com/kb/en/beginner-mariadb-articles/
+https://www.tutorialspoint.com/mariadb/mariadb_installation.htm
+
+자바연동
+https://juyoung-1008.tistory.com/29
