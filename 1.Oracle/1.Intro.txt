@@ -177,8 +177,10 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
 	- ex) 테이블 이름 변경
 
 	      ALTER TABLE table_name(before) rename to table_name(after);
-   	
 
+   	- ex) 테이블 중복불가 설정 
+	
+	      ALTER TABLE members ADD CONSTRAINT uk_m_id UNIQUE(m_id); 
 
 	- desc table_name: 해당 테이블을 스트립트 출력에 보여줌.
 
@@ -349,7 +351,9 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
 
 
 3. PL / SQL
+
  (1) Intro
+
      1) 정의
         오라클에서 지원하는 프로그래밍 언어의 특성을 수용한 SQL의 확장 SQL의 쿼리문 + 제어문을 사용.
         절차적 프로그램이 가능하게 한 오라클 SQL 전용언어 
@@ -358,7 +362,9 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
 
      3) 참조: http://www.tutorialspoint.com/plsql/index.htm   
 
+
  (2) 프로시저
+
      1) 정의 
         return 예약어를 사용하지 않음. 결과를 가지고 되돌아 가려면 out 예약어를 사용해야 한다. 
         작업순서가 정해진 독립된 프로그램의 수행 단위.
@@ -522,7 +528,9 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
     		dbms_output.put_line('책 가격 ' || v_price);
 	     END;
 
+
  (3) function
+
      1) 정의
         반드시 return 예약어 사용, 보통은 SQL문에서 호출해서 사용, 컬럼을 가공해서 반환
 
@@ -612,6 +620,7 @@ DBMS(DataBaseManagementSystem): 데이터베이스를 관리하는 시스템
  (6) 제약조건
      
      1) 종류 
+
      	1-1) not null: null값이 들어오면 안 된다. (insert할 때 반드시 값을 넣어야 함.)
 
      	1-2) unique : 유일한, 중복이 되지 않도록 하는 것.

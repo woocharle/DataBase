@@ -1,0 +1,43 @@
+
+* 연습용 계정 만들기 (cmd창에 sqlplus 명령어를 치고 나서 실행할 것) 
+
+SQL> ALTER SESSION SET "_ORACLE_SCRIPT"=true;
+
+SQL> @?/demo/schema/human_resources/hr_main.sql
+
+specify password for HR as parameter 1:
+
+Enter value for 1: hr
+
+ 
+
+specify default tablespace for HR as parameter 2:
+
+Enter value for 2: users
+
+ 
+
+specify temporary tablespace for HR as parameter 3:
+
+Enter value for 3: temp
+
+ 
+
+specify log path as parameter 4:
+
+Enter value for 4: $ORACLE_HOME/demo/schema/log/
+
+완료 후
+
+ALTER USER HR ACCOUNT UNLOCK IDENTIFIED BY 사용할비밀번호; 
+
+*사용할 비밀번호: 1111
+
+======================================================================================================================
+
+sql developer에서 계정 만들고 연결하기
+
+
+
+
+
